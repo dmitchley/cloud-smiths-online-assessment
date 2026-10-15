@@ -1,0 +1,102 @@
+<template>
+  <div class="page">
+    <div class="card">
+      <header class="header">
+        <h1 class="title">Holidays on Your Birthday</h1>
+        <p class="description">
+          Enter your South African ID number and we'll decode your date of
+          birth, gender and citizenship, then show the South African public
+          holidays for the year you were born, including any that fall on your
+          birthday.
+        </p>
+      </header>
+
+      <div class="form">
+        <lightning-input
+          type="text"
+          label="South African ID Number"
+          placeholder="e.g. 9001015009087"
+          max-length="13"
+          value={idNumber}
+          onchange={handleChange}
+        ></lightning-input>
+
+        <lightning-button
+          class="search-btn"
+          variant="brand"
+          label="Search"
+          icon-name="utility:search"
+          disabled={isSearchDisabled}
+          onclick={handleSearch}
+        ></lightning-button>
+      </div>
+
+      <template lwc:if={isLoading}>
+        <div class="spinner-holder">
+          <lightning-spinner
+            alternative-text="Loading"
+            size="small"
+          ></lightning-spinner>
+        </div>
+      </template>
+
+      <template lwc:if={errorMessage}>
+        <p class="error">{errorMessage}</p>
+      </template>
+
+      <template lwc:if={result}>
+        <section class="section">
+          <h2 class="section-title">Your ID details</h2>
+          <dl class="details">
+            <dt>Date of birth</dt>
+            <dd>
+              <lightning-formatted-date-time
+                value={result.dateOfBirth}
+                year="numeric"
+                month="long"
+                day="numeric"
+                time-zone="UTC"
+              ></lightning-formatted-date-time>
+            </dd>
+            <dt>Gender</dt>
+            <dd>{result.gender}</dd>
+            <dt>Citizenship</dt>
+            <dd>{citizenshipLabel}</dd>
+            <dt>Times searched</dt>
+            <dd>{result.searchCount}</dd>
+          </dl>
+        </section>
+
+        <template lwc:if={hasHolidays}>
+          <section class="section">
+            <template lwc:if={hasBirthdayHolidays}>
+              <p class="birthday-banner">🎉 You were born on a public holiday!</p>
+            </template>
+            <template lwc:else>
+              <p class="muted">None of these holidays fell on your birthday.</p>
+            </template>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Public holidays in {birthYear}</h2>
+            <ul class="holiday-list">
+              <template for:each={holidays} for:item="holiday">
+                <li key={holiday.key} class={holiday.rowClass}>
+                  <span class="holiday-date">
+                    <lightning-formatted-date-time
+                      value={holiday.dateIso}
+                      month="short"
+                      day="numeric"
+                      time-zone="UTC"
+                    ></lightning-formatted-date-time>
+                  </span>
+                  <span>{holiday.name}</span>
+                </li>
+              </template>
+            </ul>
+          </section>
+        </template>
+      </template>
+    </div>
+  </div>
+</template>
