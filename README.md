@@ -25,12 +25,6 @@ A Salesforce Experience Cloud page where a visitor enters a South African ID num
 3. Add the **ID Holiday Check** component to an Experience Cloud page, give the site guest
    profile access to `IdHolidayCheckController`, and publish.
 
-## Tests
-
-`sf apex run test -n SaIdDecoderTest,IdHolidayCheckControllerTest --code-coverage -r human`
-
-9 Apex tests, ~94% coverage. The Calendarific API is mocked with `HttpCalloutMock`.
-
 ## Design decisions
 
 - **Save first, then fetch holidays:** Apex can't make a callout after DML in the same
