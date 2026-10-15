@@ -17,14 +17,6 @@ A Salesforce Experience Cloud page where a visitor enters a South African ID num
 
 - The ID decoding guide linked in the brief ([westerncape.gov.za](https://www.westerncape.gov.za/general-publication/decoding-your-south-african-id-number-0)) is no longer available, so I based the validation on [this SA ID decoder guide](https://www.ourpower.co.za/tools/sa-id-decoder) instead.
 
-## Setup
-
-1. Deploy: `sf project deploy start -d force-app`
-2. Create a **Calendarific Setting** custom metadata record named `Default` with your API key.
-   The key is intentionally not committed to source control.
-3. Add the **ID Holiday Check** component to an Experience Cloud page, give the site guest
-   profile access to `IdHolidayCheckController`, and publish.
-
 ## Design decisions
 
 - **Save first, then fetch holidays:** Apex can't make a callout after DML in the same
